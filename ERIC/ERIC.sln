@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ERIC", "ERIC\ERIC.vcxproj", "{C1BD2455-8101-4690-9F1A-8D4DE135232D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RDA", "RDA\RDA.vcxproj", "{475C284A-1E33-4D1A-8CD9-D2A9C71DBB9A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RDA_Client_2", "RDA_Client_2\RDA_Client_2.vcxproj", "{C4B13D5A-6A5B-4030-9D70-CDED604D294C}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = ERIC.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1BD2455-8101-4690-9F1A-8D4DE135232D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C1BD2455-8101-4690-9F1A-8D4DE135232D}.Debug|Win32.Build.0 = Debug|Win32
+		{C1BD2455-8101-4690-9F1A-8D4DE135232D}.Release|Win32.ActiveCfg = Release|Win32
+		{C1BD2455-8101-4690-9F1A-8D4DE135232D}.Release|Win32.Build.0 = Release|Win32
+		{475C284A-1E33-4D1A-8CD9-D2A9C71DBB9A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{475C284A-1E33-4D1A-8CD9-D2A9C71DBB9A}.Debug|Win32.Build.0 = Debug|Win32
+		{475C284A-1E33-4D1A-8CD9-D2A9C71DBB9A}.Release|Win32.ActiveCfg = Release|Win32
+		{475C284A-1E33-4D1A-8CD9-D2A9C71DBB9A}.Release|Win32.Build.0 = Release|Win32
+		{C4B13D5A-6A5B-4030-9D70-CDED604D294C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C4B13D5A-6A5B-4030-9D70-CDED604D294C}.Debug|Win32.Build.0 = Debug|Win32
+		{C4B13D5A-6A5B-4030-9D70-CDED604D294C}.Release|Win32.ActiveCfg = Release|Win32
+		{C4B13D5A-6A5B-4030-9D70-CDED604D294C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

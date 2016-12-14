@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C1BD2455-8101-4690-9F1A-8D4DE135232D}</ProjectGuid>
+    <RootNamespace>ERIC</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LibraryPath>C:\Program Files\PCL 1.6.0\lib;C:\Program Files\PCL 1.6.0\3rdParty\Boost\lib;C:\Program Files\PCL 1.6.0\3rdParty\flann\lib;C:\Program Files\PCL 1.6.0\3rdParty\qhull\lib;C:\Program Files\PCL 1.6.0\3rdParty\VTK\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\Program Files\PCL 1.6.0\3rdParty\VTK\include\vtk-5.8;C:\Program Files\PCL 1.6.0\include\pcl-1.6;C:\Program Files\PCL 1.6.0\3rdParty\Eigen\include;C:\Program Files\PCL 1.6.0\3rdParty\Boost\include;C:\Program Files\PCL 1.6.0\3rdParty\FLANN\include;C:\Program Files\PCL 1.6.0\3rdParty\Qhull\include;$(SolutionDir)\ERIC;C:\Program Files\OpenNI\Include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>pcl_apps_debug.lib;pcl_apps_release.lib;pcl_common_debug.lib;pcl_common_release.lib;pcl_features_debug.lib;pcl_features_release.lib;pcl_filters_debug.lib;pcl_filters_release.lib;pcl_io_debug.lib;pcl_io_ply_debug.lib;pcl_io_ply_release.lib;pcl_io_release.lib;pcl_kdtree_debug.lib;pcl_kdtree_release.lib;pcl_keypoints_debug.lib;pcl_keypoints_release.lib;pcl_octree_debug.lib;pcl_octree_release.lib;pcl_registration_debug.lib;pcl_registration_release.lib;pcl_sample_consensus_debug.lib;pcl_sample_consensus_release.lib;pcl_search_debug.lib;pcl_search_release.lib;pcl_segmentation_debug.lib;pcl_segmentation_release.lib;pcl_surface_debug.lib;pcl_surface_release.lib;pcl_tracking_debug.lib;pcl_tracking_release.lib;pcl_visualization_debug.lib;pcl_visualization_release.lib</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="rda\approximied_cloud_part.cpp" />
+    <ClCompile Include="rda\common\cloud_part.cpp" />
+    <ClCompile Include="rda\common\common.cpp" />
+    <ClCompile Include="rda\common\line.cpp" />
+    <ClCompile Include="rda\curve.cpp" />
+    <ClCompile Include="rda\filtering.cpp" />
+    <ClCompile Include="rda\function\ApproximateMethod.cpp" />
+    <ClCompile Include="rda\function\BisectionMethod.cpp" />
+    <ClCompile Include="rda\function\Derivative.cpp" />
+    <ClCompile Include="rda\function\Function.cpp" />
+    <ClCompile Include="rda\function\LeastSquares.cpp" />
+    <ClCompile Include="rda\io\console.cpp" />
+    <ClCompile Include="rda\io\io.cpp" />
+    <ClCompile Include="rda\io\vizualization.cpp" />
+    <ClCompile Include="rda\rangefinder.cpp" />
+    <ClCompile Include="rda\segmentation\euclidean.cpp" />
+    <ClCompile Include="scenario\ASM.cpp" />
+    <ClCompile Include="scenario\Filters.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rda\approximied_cloud_part.h" />
+    <ClInclude Include="rda\common\cloud_part.h" />
+    <ClInclude Include="rda\common\common.h" />
+    <ClInclude Include="rda\common\line.h" />
+    <ClInclude Include="rda\curve.h" />
+    <ClInclude Include="rda\filtering.h" />
+    <ClInclude Include="rda\function\ApproximateMethod.h" />
+    <ClInclude Include="rda\function\BisectionMethod.h" />
+    <ClInclude Include="rda\function\Derivative.h" />
+    <ClInclude Include="rda\function\EquationSolver.h" />
+    <ClInclude Include="rda\function\Function.h" />
+    <ClInclude Include="rda\function\LeastSquares.h" />
+    <ClInclude Include="rda\io\console.h" />
+    <ClInclude Include="rda\io\io.h" />
+    <ClInclude Include="rda\io\vizualization.h" />
+    <ClInclude Include="rda\rangefinder.h" />
+    <ClInclude Include="rda\rdaException.h" />
+    <ClInclude Include="rda\segmentation\euclidean.h" />
+    <ClInclude Include="rda\vector.h" />
+    <ClInclude Include="scenario\ASM.h" />
+    <ClInclude Include="scenario\Filters.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

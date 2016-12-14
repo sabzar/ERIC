@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Файлы исходного кода">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы\rda">
+      <UniqueIdentifier>{b5b1b5a5-4abd-46c7-b8b4-82f7739b5f1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\rda">
+      <UniqueIdentifier>{a4450a94-8ebe-4918-b03c-0bbd8e497941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\rda\io">
+      <UniqueIdentifier>{547b0372-2889-4285-a169-5d2986edaf80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\rda\io">
+      <UniqueIdentifier>{190d8146-ac6c-4b58-9ac1-713abdcffd87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\rda\segmentation">
+      <UniqueIdentifier>{287f56b8-8772-4153-94f1-0850dddd7a60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\rda\function">
+      <UniqueIdentifier>{4fc78c6e-69bc-4800-b571-634699756b2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\rda\function">
+      <UniqueIdentifier>{9b6195bf-8938-4857-bad1-a3327dfcb645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\rda\segmentation">
+      <UniqueIdentifier>{469e3564-f310-4781-b7a0-d96d7e59e708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\rda\common">
+      <UniqueIdentifier>{00d30b5e-0335-4094-b211-8220f5a6b59d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\rda\common">
+      <UniqueIdentifier>{4d34c191-14e1-44fa-b93d-8bf648e18bcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\scenario">
+      <UniqueIdentifier>{4f886cc1-c609-4287-9349-1350ea0755f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы исходного кода\scenario">
+      <UniqueIdentifier>{f377ed34-b881-4580-91ab-500646eac09c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\io\console.cpp">
+      <Filter>Файлы исходного кода\rda\io</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\io\io.cpp">
+      <Filter>Файлы исходного кода\rda\io</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\io\vizualization.cpp">
+      <Filter>Файлы исходного кода\rda\io</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\filtering.cpp">
+      <Filter>Файлы исходного кода\rda</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\segmentation\euclidean.cpp">
+      <Filter>Файлы исходного кода\rda\segmentation</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\rangefinder.cpp">
+      <Filter>Файлы исходного кода\rda</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\function\ApproximateMethod.cpp">
+      <Filter>Файлы исходного кода\rda\function</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\function\BisectionMethod.cpp">
+      <Filter>Файлы исходного кода\rda\function</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\function\Derivative.cpp">
+      <Filter>Файлы исходного кода\rda\function</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\function\Function.cpp">
+      <Filter>Файлы исходного кода\rda\function</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\function\LeastSquares.cpp">
+      <Filter>Файлы исходного кода\rda\function</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\curve.cpp">
+      <Filter>Файлы исходного кода\rda</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\common\common.cpp">
+      <Filter>Файлы исходного кода\rda\common</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\common\cloud_part.cpp">
+      <Filter>Файлы исходного кода\rda\common</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\common\line.cpp">
+      <Filter>Файлы исходного кода\rda\common</Filter>
+    </ClCompile>
+    <ClCompile Include="rda\approximied_cloud_part.cpp">
+      <Filter>Файлы исходного кода\rda</Filter>
+    </ClCompile>
+    <ClCompile Include="scenario\ASM.cpp">
+      <Filter>Файлы исходного кода\scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="scenario\Filters.cpp">
+      <Filter>Файлы исходного кода\scenario</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rda\io\console.h">
+      <Filter>Заголовочные файлы\rda\io</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\io\io.h">
+      <Filter>Заголовочные файлы\rda\io</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\io\vizualization.h">
+      <Filter>Заголовочные файлы\rda\io</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\filtering.h">
+      <Filter>Заголовочные файлы\rda</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\rdaException.h">
+      <Filter>Заголовочные файлы\rda</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\vector.h">
+      <Filter>Заголовочные файлы\rda</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\rangefinder.h">
+      <Filter>Заголовочные файлы\rda</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\function\ApproximateMethod.h">
+      <Filter>Заголовочные файлы\rda\function</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\function\BisectionMethod.h">
+      <Filter>Заголовочные файлы\rda\function</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\function\Derivative.h">
+      <Filter>Заголовочные файлы\rda\function</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\function\EquationSolver.h">
+      <Filter>Заголовочные файлы\rda\function</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\function\Function.h">
+      <Filter>Заголовочные файлы\rda\function</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\function\LeastSquares.h">
+      <Filter>Заголовочные файлы\rda\function</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\segmentation\euclidean.h">
+      <Filter>Заголовочные файлы\rda\segmentation</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\common\common.h">
+      <Filter>Заголовочные файлы\rda\common</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\common\cloud_part.h">
+      <Filter>Заголовочные файлы\rda\common</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\common\line.h">
+      <Filter>Заголовочные файлы\rda\common</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\approximied_cloud_part.h">
+      <Filter>Заголовочные файлы\rda</Filter>
+    </ClInclude>
+    <ClInclude Include="scenario\ASM.h">
+      <Filter>Заголовочные файлы\scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="scenario\Filters.h">
+      <Filter>Заголовочные файлы\scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="rda\curve.h">
+      <Filter>Заголовочные файлы\rda</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
