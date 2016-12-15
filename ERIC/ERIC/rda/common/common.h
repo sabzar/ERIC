@@ -50,6 +50,34 @@ namespace rda {
 
 	double standardDeviation(std::vector<double>& values, double& avarage);
 
+	template<typename T, class InputIterator>
+	T mean_value(InputIterator begin, InputIterator end)
+	{
+		T mean = T(0);
+		auto size = end - begin;
+
+		while(begin != end){
+			mean += *begin;
+			++begin;
+		}
+		return mean / size;
+	}
+
+	template<typename T, class InputIterator>
+	T standart_deviation(InputIterator begin, InputIterator end, T& mean)
+	{
+		mean = mean_value<T>(begin, end);
+		T sum = 0;
+		auto size = end - begin;
+
+		while(begin != end){
+			sum += pow(*begin - mean, 2);
+			++begin;
+		}
+
+		return sqrt(sum / size);
+	}
+
 	BoundingBox boundingBox(rda::cloudPtr cloud);
 
 	//returns clouPtr with vertexes of bounding box

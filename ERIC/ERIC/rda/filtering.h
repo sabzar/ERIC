@@ -11,6 +11,9 @@ namespace rda {
 	void statisticalFilter(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ> &filtered_cloud, int neighbour, double thresh );
 
 	void medianFilter(std::vector<double>& values, int wsize, std::vector<double>& output);
+
+	// final window size is 2*window_size + 1
+	void kuwahara_filter(const std::vector<double>& values, int window_size, std::vector<double>& output);
 }
 
 #endif
