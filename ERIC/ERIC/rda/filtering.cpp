@@ -1,6 +1,8 @@
 
 #include "filtering.h"
 #include <rda\common\common.h>
+#include <list>
+#include <algorithm>
 
 void rda::statisticalFilter(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointXYZ> &filtered_cloud, int k, double thr ){
 	pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
@@ -29,6 +31,32 @@ void rda::medianFilter(std::vector<double>& values, int wsize, std::vector<doubl
 		std::sort(buf.begin(), buf.end());
 		output[i] = buf[wsize/2];
 	}
+}
+
+void rda::reduce_median_filter(std::vector<double>& values, int wsize, std::vector<int>& indexes)
+{
+	std::vector<double> v(values.begin(), values.end());
+
+	std::vector<double> buf(wsize);
+	int n = v.size(); // to int 
+	for(auto i = 0; i < v.size(); i++){
+		for(auto j = 0; j < buf.size(); j++){
+			int k = i + j - wsize/2;
+			//if(k < 0)
+				buf[j] = v.front();
+			if(k >= n)
+				buf[j] = v.back();
+			if( k >= 0 && k < v.size())
+				buf[j] = v[k];
+		}
+
+		std::sort(buf.begin(), buf.end());
+		if(v[i] == buf[wsize/2])
+			indexes.push_back(i);
+
+		//v[i] = buf[wsize/2];
+
+	}		
 }
 
 void rda::kuwahara_filter(const std::vector<double>& values, int w_size, std::vector<double>& output){

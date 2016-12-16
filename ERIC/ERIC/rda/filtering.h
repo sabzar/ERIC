@@ -12,6 +12,8 @@ namespace rda {
 
 	void medianFilter(std::vector<double>& values, int wsize, std::vector<double>& output);
 
+	void reduce_median_filter(std::vector<double>& values, int wsize, std::vector<int>& indexes);
+
 	// final window size is 2*window_size + 1
 	void kuwahara_filter(const std::vector<double>& values, int window_size, std::vector<double>& output);
 }

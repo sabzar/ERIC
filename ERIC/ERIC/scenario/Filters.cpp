@@ -20,13 +20,14 @@ Filters::Filters(int argc, char* argv[]){
 		rda::cloudPtr dist_cloud (new rda::cloud);
 
 		rda::cloudPtr med_cloud (new rda::cloud);
+		rda::cloudPtr rmed_cloud (new rda::cloud);
 		rda::cloudPtr kuw_cloud (new rda::cloud);
 		rda::cloudPtr stat_cloud (new rda::cloud);
 
 		rda::cloudPtr med_dist_cloud (new rda::cloud);	
 		rda::cloudPtr kuw_dist_cloud (new rda::cloud);	
 		rda::cloudPtr stat_dist_cloud (new rda::cloud);
-		//rda::cloudPtr sma_dist_cloud (new rda::cloud);	
+		rda::cloudPtr rmed_dist_cloud (new rda::cloud);	
 				
 		rda::Console::readArgs(argc, argv);	
 
@@ -38,6 +39,11 @@ Filters::Filters(int argc, char* argv[]){
 		int median_window = atof(rda::Console::getParam("-median_window").c_str());		
 		std::vector<double> median_distances;
 		rda::medianFilter(distances, median_window, median_distances);
+
+		// reduce median filter		
+		int reduce_median_window = atof(rda::Console::getParam("-reduce_median_window").c_str());		
+		std::vector<int> reduce_median_indexes;
+		rda::reduce_median_filter(distances, reduce_median_window, reduce_median_indexes);
 
 		//kuwahara filter
 		std::vector<double> kuwahara_distances;
@@ -52,6 +58,7 @@ Filters::Filters(int argc, char* argv[]){
 		rda::statisticalDistanceFilter(distances, kN, threshold, filtered_dists_indexes); 
 		
 		rda::computePointCloud(rob_points, median_distances, med_cloud, sensor_id);
+		rda::computePointCloud(rob_points, distances, reduce_median_indexes, rmed_cloud, sensor_id);
 		rda::computePointCloud(rob_points, kuwahara_distances, kuw_cloud, sensor_id);
 		rda::computePointCloud(rob_points, distances, filtered_dists_indexes, stat_cloud, sensor_id);
 
@@ -68,14 +75,16 @@ Filters::Filters(int argc, char* argv[]){
 		for(auto i = 0; i < filtered_dists_indexes.size(); i++){
 			stat_dist_cloud->push_back(rda::Point(filtered_dists_indexes[i], distances[filtered_dists_indexes[i]], 0));
 		}
-		//Test area
-		
-		
 
-		//
+		for(auto i = 0; i < reduce_median_indexes.size(); i++)
+			rmed_dist_cloud->push_back(rda::Point(reduce_median_indexes[i], distances[reduce_median_indexes[i]], 0));					
 
 
 		#pragma region Vizualization
+
+		std::cout << "Input: " << dist_cloud->size() << std::endl;
+		std::cout << "Statistical: " << stat_dist_cloud->size() << std::endl;
+		std::cout << "Reduce median: " << rmed_dist_cloud->size() << std::endl;
 
 		rda::Vizualizer::init(&argc, argv);	
 		rda::Vizualizer v;
@@ -91,11 +100,13 @@ Filters::Filters(int argc, char* argv[]){
 		v_1.addCloud(dist_cloud, rda::POINTS, 0.0f, 0.0f, 0.0f, 1.0f, 4.0f);
 		v_1.addCloud(stat_dist_cloud, rda::LINE_STRIP, 0.0f, 0.0f, 1.0f, 1.0f, 4.0f);
 		v_1.addCloud(med_dist_cloud, rda::LINE_STRIP, 0.0f, 1.0f, 0.0f, 1.0f, 4.0f);		
+		v_1.addCloud(rmed_dist_cloud, rda::LINE_STRIP, 1.0f, 0.0f, 1.0f, 1.0f, 4.0f);
 		//v_1.addCloud(kuw_dist_cloud, rda::LINE_STRIP, 0.0f, 0.0f, 1.0f, 1.0f, 4.0f);
 
 		v.addCloud(cloud, rda::LINE_STRIP, 1.0f, 0.0f, 0.0f, 1.0f, 4.0f);
 		v.addCloud(stat_cloud, rda::LINE_STRIP, 0.0f, 0.0f, 1.0f, 1.0f, 4.0f);
 		v.addCloud(med_cloud, rda::LINE_STRIP, 0.0f, 1.0f, 0.0f, 1.0f, 4.0f);		
+		v.addCloud(rmed_cloud, rda::LINE_STRIP, 1.0f, 0.0f, 1.0f, 1.0f, 4.0f);
 		//v.addCloud(kuw_cloud, rda::LINE_STRIP, 0.0f, 0.0f, 1.0f, 1.0f, 4.0f);
 
 		rda::Vizualizer::start();
