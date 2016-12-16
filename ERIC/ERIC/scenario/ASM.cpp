@@ -56,12 +56,15 @@ ASM::ASM(int argc, char* argv[]){
 		
 		int kN = atof(rda::Console::getParam("-filter_kN").c_str());
 		double threshold = atof(rda::Console::getParam("-filter_threashold").c_str());
+		int reduce_median_window = atof(rda::Console::getParam("-reduce_median_window").c_str());
 
 		clock_t filter_clock;
 		filter_clock = clock();
 
+		// statistical filter
 		std::vector<int> filtered_dists_indexes;
-		rda::statisticalDistanceFilter(distances, kN, threshold, filtered_dists_indexes); 
+		//rda::statisticalDistanceFilter(distances, kN, threshold, filtered_dists_indexes); 
+		rda::reduce_median_filter(distances, reduce_median_window, filtered_dists_indexes);
 
 		rda::computePointCloud(rob_points, distances, filtered_dists_indexes, cloud_filtered, sensor_id);
 

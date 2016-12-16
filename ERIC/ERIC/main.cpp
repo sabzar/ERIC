@@ -6,6 +6,6 @@
 
 int main(int argc, char* argv[]){
 		
-	//ASM a(argc, argv);	
-	Filters(argc, argv);
+	ASM a(argc, argv);	
+	//Filters(argc, argv);
 }
