@@ -82,6 +82,7 @@
     <ClCompile Include="rda\rangefinder.cpp" />
     <ClCompile Include="rda\segmentation\euclidean.cpp" />
     <ClCompile Include="scenario\ASM.cpp" />
+    <ClCompile Include="scenario\ASM_F.cpp" />
     <ClCompile Include="scenario\Filters.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +106,7 @@
     <ClInclude Include="rda\segmentation\euclidean.h" />
     <ClInclude Include="rda\vector.h" />
     <ClInclude Include="scenario\ASM.h" />
+    <ClInclude Include="scenario\ASM_F.h" />
     <ClInclude Include="scenario\Filters.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

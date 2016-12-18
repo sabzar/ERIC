@@ -108,6 +108,9 @@
     <ClCompile Include="scenario\Filters.cpp">
       <Filter>Файлы исходного кода\scenario</Filter>
     </ClCompile>
+    <ClCompile Include="scenario\ASM_F.cpp">
+      <Filter>Файлы исходного кода\scenario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="rda\io\console.h">
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="rda\curve.h">
       <Filter>Заголовочные файлы\rda</Filter>
+    </ClInclude>
+    <ClInclude Include="scenario\ASM_F.h">
+      <Filter>Заголовочные файлы\scenario</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

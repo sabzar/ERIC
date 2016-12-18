@@ -38,6 +38,8 @@ namespace rda {
 
 	void monotonePartitioning(rda::cloudPtr cloud, double max_dist, int min_part_size, std::vector<rda::CloudPart>& parts);
 
+	void naive_beakpoint_detector(std::vector<double>& distances, double max_diff, int min_points, std::vector<rda::Range>& indexes);
+
 	void lineSegmentation(std::vector<rda::CloudPart>& parts, double threshold, std::vector<rda::CloudPart>& line_parts);	
 
 	void adaptiveLineSegmentation(std::vector<rda::CloudPart>& parts, int min_part_size, double min_error, std::vector<rda::CloudPart>& line_parts);
