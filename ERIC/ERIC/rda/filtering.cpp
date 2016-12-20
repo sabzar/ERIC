@@ -33,29 +33,25 @@ void rda::medianFilter(std::vector<double>& values, int wsize, std::vector<doubl
 	}
 }
 
-void rda::reduce_median_filter(std::vector<double>& values, int wsize, std::vector<int>& indexes)
-{
-	std::vector<double> v(values.begin(), values.end());
-
+void rda::reduce_median_filter(std::vector<double>& values, rda::Range bounds, int wsize, std::vector<int>& indexes)
+{	
 	std::vector<double> buf(wsize);
-	int n = v.size(); // to int 
-	for(auto i = 0; i < v.size(); i++){
+	int n = values.size(); // to int 
+
+	for(auto i = bounds.start; i <= bounds.end; i++){
 		for(auto j = 0; j < buf.size(); j++){
 			int k = i + j - wsize/2;
 			//if(k < 0)
-				buf[j] = v.front();
+				buf[j] = values.front();
 			if(k >= n)
-				buf[j] = v.back();
-			if( k >= 0 && k < v.size())
-				buf[j] = v[k];
+				buf[j] = values.back();
+			if( k >= 0 && k < values.size())
+				buf[j] = values[k];
 		}
 
 		std::sort(buf.begin(), buf.end());
-		if(v[i] == buf[wsize/2])
-			indexes.push_back(i);
-
-		//v[i] = buf[wsize/2];
-
+		if(values[i] == buf[wsize/2])
+			indexes.push_back(i);		
 	}		
 }
 

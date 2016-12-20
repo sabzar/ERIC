@@ -1,6 +1,11 @@
 
 #include <rda\common\cloud_part.h>
 
+rda::CloudPart::CloudPart(rda::cloudPtr cloud){
+	this->cloud_ = cloud;
+	this->range_ = rda::Range(0, cloud->size() - 1);
+}
+
 rda::CloudPart::CloudPart(rda::cloudPtr cloud, rda::Range range){
 	this->cloud_ = cloud;
 	this->range_ = range;

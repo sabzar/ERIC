@@ -64,7 +64,7 @@ ASM::ASM(int argc, char* argv[]){
 		// statistical filter
 		std::vector<int> filtered_dists_indexes;
 		//rda::statisticalDistanceFilter(distances, kN, threshold, filtered_dists_indexes); 
-		rda::reduce_median_filter(distances, reduce_median_window, filtered_dists_indexes);
+		rda::reduce_median_filter(distances, rda::Range(0, distances.size() - 1), reduce_median_window, filtered_dists_indexes);
 
 		rda::computePointCloud(rob_points, distances, filtered_dists_indexes, cloud_filtered, sensor_id);
 

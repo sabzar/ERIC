@@ -43,7 +43,7 @@ Filters::Filters(int argc, char* argv[]){
 		// reduce median filter		
 		int reduce_median_window = atof(rda::Console::getParam("-reduce_median_window").c_str());		
 		std::vector<int> reduce_median_indexes;
-		rda::reduce_median_filter(distances, reduce_median_window, reduce_median_indexes);
+		rda::reduce_median_filter(distances, rda::Range(0, distances.size() - 1), reduce_median_window, reduce_median_indexes);
 
 		//kuwahara filter
 		std::vector<double> kuwahara_distances;

@@ -19,6 +19,8 @@ namespace rda {
 
 	public: 		
 
+		CloudPart(rda::cloudPtr cloud);
+
 		CloudPart(rda::cloudPtr cloud, rda::Range range);
 
 		rda::cloudPtr cloud();
