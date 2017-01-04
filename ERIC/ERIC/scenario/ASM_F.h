@@ -23,7 +23,9 @@ public:
 		int min_part_size = 8, double merge_dist = 50, double merge_angle = 20, int filter_kN = 5,
 		double filter_threashold = 0.7);*/
 
-	ASM_F(int argc, char* argv[]);
+	void general(int argc, char* argv[]);
+
+	void sectorScanning(int argc, char* argv[]);
 
 	//void run();
 };

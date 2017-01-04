@@ -9,7 +9,8 @@ int main(int argc, char* argv[]){
 		
 	//ASM a(argc, argv);	
 	//Filters(argc, argv);
-	ASM_F a(argc, argv);
+	ASM_F a;
+	a.sectorScanning(argc, argv);
 
 	return 0;
 }

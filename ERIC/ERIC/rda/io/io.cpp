@@ -170,3 +170,79 @@ void rda::readScene(std::string file, std::vector<double>& distances, std::vecto
 
 	f.close();	
 }
+
+void rda::readScene(std::string file, std::vector<double>& distances, std::vector<rda::RPoint>& rob_points, std::vector<rda::Range>& parts, int& sensor)
+{
+	std::fstream f;
+	f.open(file, std::ios::in);
+	if(!f.is_open())
+		throw rda::RdaException("Failed to read file " + file);
+
+	sensor = FrontSensor;
+	int line_number = 0;
+	int read_from_line_num = 1;
+	int size = 4;		// количество считываемых элементов
+	int offset = 1; // сдвиг относительно 0-ого
+	sensor = FrontSensor;
+
+	std::string buf;
+	getline(f, buf);
+	std::vector<std::string> title_names;
+	split(buf, " ", title_names);
+
+	if (strcmp(title_names[2].c_str(), "0.") == 0){
+		read_from_line_num = 1;
+	}
+	if (strcmp(title_names[2].c_str(), "1.") == 0){
+		read_from_line_num = 16;
+	}
+	if (strcmp(title_names[2].c_str(), "2.") == 0){
+		read_from_line_num = 27;		
+		senorInFile(FrontSensor, &size, &offset);		
+	}
+
+	int no_data = 0;
+	int start_index = 0;
+	bool closed_part = true;
+	while(!f.eof()){
+		if(line_number >= read_from_line_num){
+			std::vector<std::string> slices;
+			split(buf, " ", slices);
+
+			if(slices.back().at(0) != 'n'){
+				if(closed_part){
+					start_index = distances.size();
+					closed_part = false;
+				}
+				RPoint r_point(atof(slices[1].c_str()), atof(slices[2].c_str()), atof(slices[3].c_str()));
+				rob_points.push_back(r_point);
+				distances.push_back(atof(slices.back().c_str()));
+				no_data = 0;
+			}
+			else{
+				if(++no_data == 3){
+					if(!closed_part){
+						parts.push_back(rda::Range(start_index, distances.size() - 1));
+						closed_part = true;
+					}
+				}
+			}
+		}
+
+		if(line_number == 6){
+			std::vector<std::string> a;
+			split(buf, " ", a);
+			if(strcmp(a.back().c_str(),"Rf_L:") == 0)
+				sensor = LeftSensor;
+			if(strcmp(a.back().c_str(),"Rf_R:") == 0)
+				sensor = RightSensor;
+		}
+
+		getline(f, buf);
+		line_number++;
+	}
+	if(!closed_part)
+		parts.push_back(rda::Range(start_index, distances.size() - 1));
+
+
+}

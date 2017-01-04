@@ -42,9 +42,9 @@ void rda::reduce_median_filter(std::vector<double>& values, rda::Range bounds, i
 		for(auto j = 0; j < buf.size(); j++){
 			int k = i + j - wsize/2;
 			//if(k < 0)
-				buf[j] = values.front();
+				buf[j] = values[bounds.start];
 			if(k >= n)
-				buf[j] = values.back();
+				buf[j] = values[bounds.end];
 			if( k >= 0 && k < values.size())
 				buf[j] = values[k];
 		}

@@ -21,6 +21,8 @@ namespace rda {
 
 	void readScene(std::string file, std::vector<double>& distances, std::vector<rda::RPoint>& rob_points, int& sensor);
 
+	void readScene(std::string file, std::vector<double>& distances, std::vector<rda::RPoint>& rob_points, std::vector<rda::Range>& parts, int& sensor);
+
 }
 
 

@@ -11,7 +11,7 @@
 #include <rda\rdaException.h>
 
 
-ASM_F::ASM_F(int argc, char* argv[]){
+void ASM_F::general(int argc, char* argv[]){
 
 	try{				
 		std::vector<double> distances;			
@@ -35,16 +35,24 @@ ASM_F::ASM_F(int argc, char* argv[]){
 		rda::computePointCloud(rob_points, distances, cloud, sensor_id);
 
 		//naive breakpoint detector (distances)
+		std::vector<std::pair<double, double>> dist_errors;
+		dist_errors.push_back(std::make_pair(280, 10));
+		dist_errors.push_back(std::make_pair(500, 20));
+		dist_errors.push_back(std::make_pair(630, 30));
+		dist_errors.push_back(std::make_pair(930, 80));
+		dist_errors.push_back(std::make_pair(1000, 100));
+
 		double max_dist_diff = atof(rda::Console::getParam("-max_dist_diff").c_str());
 		int min_segm_points = atof(rda::Console::getParam("-min_segm_points").c_str());
 		std::vector<rda::Range> brp_indexes;
-		rda::naive_beakpoint_detector(distances, max_dist_diff, min_segm_points, brp_indexes); 
+		//rda::naive_beakpoint_detector(distances, max_dist_diff, min_segm_points, brp_indexes); 
+		rda::adaptiveNaiveDetector(distances, dist_errors, min_segm_points, brp_indexes);
 
 		// reduce median filter		
 		int reduce_median_window = atof(rda::Console::getParam("-reduce_median_window").c_str());		
 		std::vector<std::vector<int>> reduce_median_indexes;		
 		for(auto i = 0; i < brp_indexes.size(); i++){
-			std::vector<int> n_indexes;
+			std::vector<int> n_indexes;			
 			rda::reduce_median_filter(distances, brp_indexes[i], reduce_median_window, n_indexes);
 			if(n_indexes.size() > 0){
 				reduce_median_indexes.push_back(n_indexes);
@@ -165,6 +173,62 @@ ASM_F::ASM_F(int argc, char* argv[]){
 
 		#pragma endregion
 
+	}
+	catch(rda::RdaException& e){
+		std::cout << e.what() << std::endl;
+	}
+}
+
+void ASM_F::sectorScanning(int argc, char* argv[])
+{
+	try{
+		std::vector<double> distances;
+		std::vector<rda::RPoint> rob_points;
+		std::vector<rda::Range> part_ranges;
+
+		std::vector<rda::cloudPtr> raw_clouds;
+
+		rda::Console::readArgs(argc, argv);
+
+		int sensor_id = 0;
+		rda::readScene(rda::Console::getParam("-file"), distances, rob_points, part_ranges, sensor_id);		
+		
+		for(auto i = 0; i < part_ranges.size(); i++){
+			rda::cloudPtr pc(new rda::cloud);			
+			for(auto j = part_ranges[i].start; j <= part_ranges[i].end; j++){
+				pc->push_back(rda::computePoint(rob_points[j], distances[j], sensor_id));
+			}
+			raw_clouds.push_back(pc);
+		}
+
+
+		#pragma region Vizualization
+		
+		std::vector<rda::cloudPtr> dists_clouds;
+
+		int dists_number = 0;
+		for(auto it = part_ranges.begin(); it != part_ranges.end(); ++it){
+			dists_clouds.push_back(rda::cloudPtr(new rda::cloud));
+			for(auto i = it->start; i <= it->end; i++){
+				dists_clouds.back()->push_back(rda::Point(dists_number++, distances[i], 1));
+			}
+		}
+
+		// Vizualizer
+		rda::Vizualizer::init(&argc, argv);	
+		rda::Vizualizer v;
+		rda::Vizualizer v_1;
+
+		v.createWindow("distances", 700, 700, 20, 20);
+		v_1.createWindow("raw", 700, 700, 720, 20);
+
+		v.addClouds(dists_clouds, rda::CIRCLES, 1.0f);
+		v.addClouds(dists_clouds, rda::LINE_STRIP, 1.0f);
+		v_1.addClouds(raw_clouds, rda::CIRCLES, 1.0f);
+
+		rda::Vizualizer::start();
+
+		#pragma endregion
 	}
 	catch(rda::RdaException& e){
 		std::cout << e.what() << std::endl;
