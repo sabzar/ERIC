@@ -257,12 +257,15 @@ void buildSplitTree(rda::CloudPart c, int min_part_size, double min_error, Split
 
 	if( (parent->range.size() > min_part_size) ){
 		
-		//double avarage = 0.0;
-		//double deviation = 0.0;
+		double avarage = 0.0;
+		double deviation = 0.0;
 	
 		int index = 0;
-		//parent->error = maxDistanceFromLine(c.cloud(), parent->range.start, parent->range.end,avarage, deviation, index);
-		parent->error = maxDistanceFromLine(c.cloud(), parent->range.start, parent->range.end, index);
+		parent->error = maxDistanceFromLine(c.cloud(), parent->range.start, parent->range.end,avarage, deviation, index);
+		//new
+		parent->error = deviation;
+		//endnew
+		//parent->error = maxDistanceFromLine(c.cloud(), parent->range.start, parent->range.end, index);
 		if(parent->error < 4)
 			parent->error = 4;
 		parent->length = rda::CloudPart(c.cloud(), parent->range).line().length();

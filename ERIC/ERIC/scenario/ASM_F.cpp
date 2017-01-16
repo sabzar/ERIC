@@ -48,7 +48,7 @@ void ASM_F::general(int argc, char* argv[]){
 		//rda::naive_beakpoint_detector(distances, max_dist_diff, min_segm_points, brp_indexes); 
 		rda::adaptiveNaiveDetector(distances, dist_errors, min_segm_points, brp_indexes);
 
-		// reduce median filter		
+		// reduce median filter	
 		int reduce_median_window = atof(rda::Console::getParam("-reduce_median_window").c_str());		
 		std::vector<std::vector<int>> reduce_median_indexes;		
 		for(auto i = 0; i < brp_indexes.size(); i++){
@@ -187,12 +187,42 @@ void ASM_F::sectorScanning(int argc, char* argv[])
 		std::vector<rda::Range> part_ranges;
 
 		std::vector<rda::cloudPtr> raw_clouds;
+		std::vector<rda::cloudPtr> reduce_median_clouds;
 
 		rda::Console::readArgs(argc, argv);
 
 		int sensor_id = 0;
-		rda::readScene(rda::Console::getParam("-file"), distances, rob_points, part_ranges, sensor_id);		
+		rda::readScene(rda::Console::getParam("-file"), distances, rob_points, part_ranges, sensor_id);				
+
+		// reduce median filter	
+		int reduce_median_window = atof(rda::Console::getParam("-reduce_median_window").c_str());
+		std::vector<std::vector<int>> reduce_median_indexes;
+		for(auto it = part_ranges.begin(); it != part_ranges.end(); ++it){
+			std::vector<int> rm_indexes;
+			rda::reduce_median_filter(distances, *it, reduce_median_window, rm_indexes);			
+			reduce_median_indexes.push_back(rm_indexes);
+
+			// count filtered into world coordinate system)
+			rda::cloudPtr rm_cloud(new rda::cloud);
+			rda::computePointCloud(rob_points, distances, rm_indexes, rm_cloud, sensor_id);
+			reduce_median_clouds.push_back(rm_cloud);
+		}
+
+		// Adaptive Split&Merge
+		double min_rdp_eps = atof(rda::Console::getParam("-min_rdp_eps").c_str());
+		int min_rdp_size = atof(rda::Console::getParam("-min_rdp_size").c_str());
+
+		std::vector<std::vector<rda::CloudPart>> min_cloud_parts;
+		for(auto it = reduce_median_clouds.begin(); it != reduce_median_clouds.end(); ++it){
+			std::vector<rda::CloudPart> min_parts;
+			rda::adaptive_rdp(rda::CloudPart(*it), min_rdp_size, min_rdp_eps, min_parts);
+			min_cloud_parts.push_back(min_parts);
+		}
+
+
+		#pragma region Vizualization
 		
+		//raw clouds
 		for(auto i = 0; i < part_ranges.size(); i++){
 			rda::cloudPtr pc(new rda::cloud);			
 			for(auto j = part_ranges[i].start; j <= part_ranges[i].end; j++){
@@ -201,11 +231,8 @@ void ASM_F::sectorScanning(int argc, char* argv[])
 			raw_clouds.push_back(pc);
 		}
 
-
-		#pragma region Vizualization
-		
+		//dists clouds
 		std::vector<rda::cloudPtr> dists_clouds;
-
 		int dists_number = 0;
 		for(auto it = part_ranges.begin(); it != part_ranges.end(); ++it){
 			dists_clouds.push_back(rda::cloudPtr(new rda::cloud));
@@ -214,17 +241,43 @@ void ASM_F::sectorScanning(int argc, char* argv[])
 			}
 		}
 
+		//filtered dists clouds
+		int filtered_dist_number = 0;
+		std::vector<rda::cloudPtr> filtered_dists_clouds;
+		for(auto it = reduce_median_indexes.begin(); it != reduce_median_indexes.end(); ++it){
+			filtered_dists_clouds.push_back(rda::cloudPtr(new rda::cloud));
+			for(auto i = it->begin(); i != it->end(); ++i){
+				filtered_dists_clouds.back()->push_back(rda::Point(*i, distances[*i], 1));
+			}
+		}
+
+		std::vector<rda::Line> min_cloud_parts_lines;
+		for(auto it = min_cloud_parts.begin(); it != min_cloud_parts.end(); ++it){
+			for(auto jt = it->begin(); jt != it->end(); ++jt){
+				min_cloud_parts_lines.push_back(jt->line());
+			}
+		}
+
 		// Vizualizer
 		rda::Vizualizer::init(&argc, argv);	
 		rda::Vizualizer v;
 		rda::Vizualizer v_1;
+		rda::Vizualizer v_2;
+		rda::Vizualizer v_3;
 
 		v.createWindow("distances", 700, 700, 20, 20);
 		v_1.createWindow("raw", 700, 700, 720, 20);
+		v_2.createWindow("reduce median filter", 700, 700, 720, 20);
+		v_3.createWindow("split&merge", 700, 700, 720, 20);
 
 		v.addClouds(dists_clouds, rda::CIRCLES, 1.0f);
 		v.addClouds(dists_clouds, rda::LINE_STRIP, 1.0f);
+		v.addClouds(filtered_dists_clouds, rda::CIRCLES, 1.0f);
+		v.addClouds(filtered_dists_clouds, rda::LINE_STRIP, 1.0f);
 		v_1.addClouds(raw_clouds, rda::CIRCLES, 1.0f);
+		v_2.addClouds(reduce_median_clouds, rda::CIRCLES, 1.0f);
+		v_3.addClouds(min_cloud_parts_lines, rda::LINES, 1.0f);
+		v_3.addClouds(reduce_median_clouds, rda::CIRCLES, 0.3f, 4.0f);
 
 		rda::Vizualizer::start();
 
