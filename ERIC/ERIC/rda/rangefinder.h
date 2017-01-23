@@ -58,6 +58,8 @@ namespace rda {
 	double compute_rdp_threashold(rda::cloudPtr dists, rda::cloudPtr ls_dists);
 
 	void statisticalDistanceFilter(std::vector<double>& distances, int neighbours_number, double threshold, std::vector<int>& indexes);
+
+	void statisticalDistanceFilter(std::vector<double>& distances, rda::Range range, int neighbours_number, double threshold, std::vector<int>& indexes);
 }
 
 #endif

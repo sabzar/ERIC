@@ -364,3 +364,57 @@ void rda::statisticalDistanceFilter(std::vector<double>& distances, int k, doubl
 	}
 
 }
+
+void rda::statisticalDistanceFilter(std::vector<double>& distances, rda::Range range, int k, double coef, std::vector<int>& indexes)
+{
+	std::vector<double> dists_sum; //values
+	std::vector<int> dist_indexes; //values
+ 
+	int half = k/2;
+
+	// Begin
+	for(int i = range.start; i < range.start + half ; i++){
+		double sumDist = 0;
+		for(int j = range.start; j < range.start + k ; j++){
+			if(i != j){
+				sumDist += std::abs(distances[i] - distances[j]);
+			}
+		}
+		dist_indexes.push_back(i);
+		dists_sum.push_back(sumDist);
+	}
+
+	//Middle
+	for(int i = range.start + half; i <= range.end - half; i++){
+		double sumDist = 0;
+		for(int j = i - half; j <= i + half; j++){
+			if(i != j){
+				sumDist += std::abs(distances[i] - distances[j]);
+			}
+		}
+
+		dist_indexes.push_back(i);
+		dists_sum.push_back(sumDist);
+	}
+
+	//End
+	for(int i = range.end; i > range.end - half ; i--){
+		double sumDist = 0;
+		for(int j = range.end; j > range.end - k; j--){
+			if(i != j){
+				sumDist += std::abs(distances[i] - distances[j]);
+			}
+		}
+		dist_indexes.push_back(i);
+		dists_sum.push_back(sumDist);
+	}
+
+	double av = 0;
+	double st_d = rda::standardDeviation(dists_sum, av);
+	double threshold = st_d * coef;
+
+	for(int i = 0; i < dists_sum.size(); i++){
+		if(dists_sum[i] <= av + threshold)
+			indexes.push_back(dist_indexes[i]);
+	}
+}

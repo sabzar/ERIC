@@ -55,6 +55,28 @@ void rda::reduce_median_filter(std::vector<double>& values, rda::Range bounds, i
 	}		
 }
 
+void rda::reduce_median_filter(std::vector<double>& values, std::vector<int>& v_indexes, int wsize, std::vector<int>& indexes)
+{
+	std::vector<double> buf(wsize);
+	int n = v_indexes.size(); // to int 
+
+	for(auto i = 0; i < v_indexes.size(); i++){
+		for(auto j = 0; j < buf.size(); j++){
+			int k = i + j - wsize/2;
+			//if(k < 0)
+				buf[j] = values[v_indexes.front()];
+			if(k >= n)
+				buf[j] = values[v_indexes.back()];
+			if( k >= 0 && k < n)
+				buf[j] = values[v_indexes[k]];
+		}
+
+		std::sort(buf.begin(), buf.end());
+		if(values[v_indexes[i]] == buf[wsize/2])
+			indexes.push_back(v_indexes[i]);		
+	}
+}
+
 void rda::kuwahara_filter(const std::vector<double>& values, int w_size, std::vector<double>& output){
 
 	output.resize(values.size());

@@ -73,7 +73,7 @@ void rda::Vizualizer::createWindow(const char* title, int w, int h, int pos_x, i
 
 	objs[this->index] = this;
 
-	glClearColor(0, 0, 0, 0);
+	glClearColor(1, 1, 1, 0);
 	/*glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(0.0, w, h, 0.0, -1, 1);
