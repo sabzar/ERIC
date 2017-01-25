@@ -202,11 +202,22 @@ void ASM_F::sectorScanning(int argc, char* argv[])
 			rda::statisticalDistanceFilter(distances, part_ranges[i], statistacal_kN, statistacal_threashold, stat_filtered_indexes[i]);
 		}		
 
+		// naive breakponit detector
+		int min_segm_points = atof(rda::Console::getParam("-min_segm_points").c_str());
+		double max_dist_diff = atof(rda::Console::getParam("-max_dist_diff").c_str());
+		std::vector<std::vector<int>> break_indexes;
+		for(auto i = 0; i < stat_filtered_indexes.size(); i++){
+			rda::naive_beakpoint_detector(distances, stat_filtered_indexes[i], max_dist_diff, min_segm_points, break_indexes);  
+		}
+
 		// reduce median filter	
 		int reduce_median_window = atof(rda::Console::getParam("-reduce_median_window").c_str());
-		std::vector<std::vector<int>> reduce_median_indexes(stat_filtered_indexes.size());
-		for(auto i = 0; i < stat_filtered_indexes.size(); i++){			
-			rda::reduce_median_filter(distances, stat_filtered_indexes[i], reduce_median_window, reduce_median_indexes[i]);						
+		std::vector<std::vector<int>> reduce_median_indexes(break_indexes.size());		
+		for(auto i = 0; i < break_indexes.size(); i++){
+			if(break_indexes[i].size() < reduce_median_window){
+				reduce_median_indexes[i] = break_indexes[i];
+			}
+			rda::reduce_median_filter(distances, break_indexes[i], reduce_median_window, reduce_median_indexes[i]);						
 
 			// count filtered into world coordinate system)
 			rda::cloudPtr rm_cloud(new rda::cloud);
@@ -224,7 +235,6 @@ void ASM_F::sectorScanning(int argc, char* argv[])
 			rda::adaptive_rdp(rda::CloudPart(*it), min_rdp_size, min_rdp_eps, min_parts);
 			min_cloud_parts.push_back(min_parts);
 		}
-
 
 		#pragma region Vizualization
 		
@@ -256,6 +266,34 @@ void ASM_F::sectorScanning(int argc, char* argv[])
 			for(auto j = 0; j < stat_filtered_indexes[i].size(); j++){
 				sf_dists_clouds[i]->push_back(rda::Point(stat_filtered_indexes[i][j], distances[stat_filtered_indexes[i][j]], 1));
 				sf_clouds[i]->push_back(rda::computePoint(rob_points[stat_filtered_indexes[i][j]], distances[stat_filtered_indexes[i][j]], sensor_id));
+			}
+		}
+
+		// stat filter test 	
+		
+		rda::cloudPtr sum_dist_cloud(new rda::cloud);
+		rda::cloudPtr sum_dist_av_cloud(new rda::cloud);
+		rda::cloudPtr sum_dist_std_cloud(new rda::cloud);
+		std::vector<std::vector<int>> stat_filtered_indexes_1(part_ranges.size());
+		std::vector<std::vector<double>> stat_dist_sum(part_ranges.size());
+		for(auto i = 0; i < part_ranges.size(); i++){			
+			rda::statisticalDistanceFilterDebug(distances, part_ranges[i], statistacal_kN, statistacal_threashold, stat_filtered_indexes_1[i], stat_dist_sum[i]);
+
+			double av = 0;
+			double st_d = 0.0;
+			st_d = rda::standart_deviation(stat_dist_sum[i].begin(), stat_dist_sum[i].end(), av);
+
+			sum_dist_av_cloud->push_back(rda::Point(part_ranges[i].start, av, 1));
+			sum_dist_av_cloud->push_back(rda::Point(part_ranges[i].end, av, 1));
+
+			sum_dist_std_cloud->push_back(rda::Point(part_ranges[i].start, av + st_d, 1));
+			sum_dist_std_cloud->push_back(rda::Point(part_ranges[i].end, av + st_d, 1));
+
+			sum_dist_std_cloud->push_back(rda::Point(part_ranges[i].start, av + 2*st_d, 1));
+			sum_dist_std_cloud->push_back(rda::Point(part_ranges[i].end, av + 2*st_d, 1));
+
+			for(auto j = 0; j < stat_dist_sum[i].size(); j++){
+				sum_dist_cloud->push_back(rda::Point(part_ranges[i].start + j, stat_dist_sum[i][j], 1));
 			}
 		}
 
@@ -301,6 +339,12 @@ void ASM_F::sectorScanning(int argc, char* argv[])
 			v.addCloud(sf_dists_clouds[i], rda::CIRCLES, 0.0f, 1.0f, 0.0f, 1.0f);			
 		}
 
+		// dists sum test
+		v.addCloud(sum_dist_cloud, rda::LINE_STRIP, 1.0f, 0.0f, 0.0f, 1.0f);
+		v.addCloud(sum_dist_cloud, rda::CIRCLES, 0.0f, 0.0f, 0.0f, 1.0f);
+		v.addCloud(sum_dist_av_cloud, rda::LINES, 0.0f, 0.0f, 0.0f, 1.0f);
+		v.addCloud(sum_dist_std_cloud, rda::LINES, 0.0f, 0.0f, 1.0f, 1.0f);
+
 		for(auto i = 0; i < raw_clouds.size(); i++){
 			v_1.addCloud(raw_clouds[i], rda::CIRCLES, 0.0f, 0.0f, 0.0f, 1.0f);
 			//v_2.addCloud(raw_clouds[i], rda::CIRCLES, 0.0f, 0.0f, 0.0f, 1.0f);
@@ -331,3 +375,7 @@ void ASM_F::sectorScanning(int argc, char* argv[])
 	}
 }
 
+void ASM_F::test(int argc, char* argv[])
+{
+
+}

@@ -35,6 +35,10 @@ void rda::medianFilter(std::vector<double>& values, int wsize, std::vector<doubl
 
 void rda::reduce_median_filter(std::vector<double>& values, rda::Range bounds, int wsize, std::vector<int>& indexes)
 {	
+	if(bounds.size() < wsize){
+		wsize = bounds.size();
+	}
+
 	std::vector<double> buf(wsize);
 	int n = values.size(); // to int 
 

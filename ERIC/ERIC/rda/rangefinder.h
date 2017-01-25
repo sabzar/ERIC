@@ -40,6 +40,8 @@ namespace rda {
 
 	void naive_beakpoint_detector(std::vector<double>& distances, double max_diff, int min_points, std::vector<rda::Range>& indexes);
 
+	void naive_beakpoint_detector(std::vector<double>& distances, std::vector<int>& v_indexes, double max_diff, int min_points, std::vector<std::vector<int>>& indexes);
+
 	void adaptiveNaiveDetector(std::vector<double>& distances, std::vector<std::pair<double, double>>& errors, int min_points, std::vector<rda::Range>& indexes);
 
 	void lineSegmentation(std::vector<rda::CloudPart>& parts, double threshold, std::vector<rda::CloudPart>& line_parts);	
@@ -60,6 +62,8 @@ namespace rda {
 	void statisticalDistanceFilter(std::vector<double>& distances, int neighbours_number, double threshold, std::vector<int>& indexes);
 
 	void statisticalDistanceFilter(std::vector<double>& distances, rda::Range range, int neighbours_number, double threshold, std::vector<int>& indexes);
+
+	void statisticalDistanceFilterDebug(std::vector<double>& distances, rda::Range range, int neighbours_number, double threshold, std::vector<int>& indexes, std::vector<double>& sum);
 }
 
 #endif

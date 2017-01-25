@@ -27,6 +27,8 @@ public:
 
 	void sectorScanning(int argc, char* argv[]);
 
+	void test(int argc, char* argv[]);
+
 	//void run();
 };
 

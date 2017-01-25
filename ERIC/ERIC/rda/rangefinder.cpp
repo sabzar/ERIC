@@ -112,6 +112,26 @@ void rda::naive_beakpoint_detector(std::vector<double>& distances, double max_di
 		indexes.push_back(rda::Range(last, distances.size() - 1));
 }
 
+void rda::naive_beakpoint_detector(std::vector<double>& distances, std::vector<int>& v_indexes, double max_diff, int min_points, std::vector<std::vector<int>>& indexes)
+{
+	std::vector<int> tmp;
+	
+	for(auto i = 0; i < v_indexes.size() - 1; i++){
+
+		tmp.push_back(v_indexes[i]);
+
+		if( std::abs( distances[v_indexes[i]] - distances[v_indexes[i+1]]) > max_diff ){
+			if( tmp.size() >= min_points)
+				indexes.push_back(tmp);	
+			tmp.clear();
+		}		
+	}
+
+	tmp.push_back(v_indexes.back());
+	if(tmp.size() >= min_points)
+		indexes.push_back(tmp);	
+}
+
 double maxDistError(double distance, std::vector<std::pair<double, double>> errors)
 {
 	if(distance < errors.front().first)
@@ -315,53 +335,9 @@ double rda::compute_rdp_threashold(rda::cloudPtr dists, rda::cloudPtr ls_dists){
 	return 1.0 * (av + 2.0 * st_d);
 }
 
-void rda::statisticalDistanceFilter(std::vector<double>& distances, int k, double coef, std::vector<int>& indexes){
-
-	std::vector<double> distsSum;
- 
-	int half = k/2;
-
-	// Begin
-	for(int i = 0; i < half ; i++){
-		double sumDist = 0;
-		for(int j = 0; j < k + 1; j++){
-			if(i != j){
-				sumDist += std::abs(distances[i] - distances[j]);
-			}
-		}
-		distsSum.push_back(sumDist);
-	}
-
-	//Middle
-	for(int i = half; i <= distances.size() - 1 - half; i++){
-		double sumDist = 0;
-		for(int j = i - half; j <= i + half; j++){
-			if(i != j){
-				sumDist += std::abs(distances[i] - distances[j]);
-			}
-		}
-		distsSum.push_back(sumDist);
-	}
-
-	//End
-	for(int i = distances.size() - 1; i > distances.size() - 1 - half ; i--){
-		double sumDist = 0;
-		for(int j = distances.size() - 1; j > distances.size() - 1 - k - 1; j--){
-			if(i != j){
-				sumDist += std::abs(distances[i] - distances[j]);
-			}
-		}
-		distsSum.push_back(sumDist);
-	}
-
-	double av = 0;
-	double st_d = rda::standardDeviation(distsSum, av);
-	double threshold = st_d * coef;
-
-	for(int i = 0; i < distsSum.size(); i++){
-		if(distsSum[i] <= av + threshold)
-			indexes.push_back(i);
-	}
+void rda::statisticalDistanceFilter(std::vector<double>& distances, int k, double coef, std::vector<int>& indexes)
+{
+	rda::statisticalDistanceFilter(distances, rda::Range(0, distances.size() - 1), k, coef, indexes);
 
 }
 
@@ -398,9 +374,62 @@ void rda::statisticalDistanceFilter(std::vector<double>& distances, rda::Range r
 	}
 
 	//End
-	for(int i = range.end; i > range.end - half ; i--){
+	for(int i = range.end - half + 1; i <= range.end ; i++){
 		double sumDist = 0;
-		for(int j = range.end; j > range.end - k; j--){
+		for(int j = range.end - k + 1; j <= range.end; j++){
+			if(i != j){
+				sumDist += std::abs(distances[i] - distances[j]);
+			}
+		}
+		dist_indexes.push_back(i);
+		dists_sum.push_back(sumDist);
+	}
+
+	double av = 0;
+	double st_d = rda::standardDeviation(dists_sum, av);
+	double threshold = st_d * coef;
+
+	for(int i = 0; i < dists_sum.size(); i++){
+		if(dists_sum[i] <= av + threshold)
+			indexes.push_back(dist_indexes[i]);
+	}
+}
+
+void rda::statisticalDistanceFilterDebug(std::vector<double>& distances, rda::Range range, int k, double coef, std::vector<int>& indexes, std::vector<double>& dists_sum)
+{	
+	std::vector<int> dist_indexes; //values
+ 
+	int half = k/2;
+
+	// Begin
+	for(int i = range.start; i < range.start + half ; i++){
+		double sumDist = 0;
+		for(int j = range.start; j < range.start + k ; j++){
+			if(i != j){
+				sumDist += std::abs(distances[i] - distances[j]);
+			}
+		}
+		dist_indexes.push_back(i);
+		dists_sum.push_back(sumDist);
+	}
+
+	//Middle
+	for(int i = range.start + half; i <= range.end - half; i++){
+		double sumDist = 0;
+		for(int j = i - half; j <= i + half; j++){
+			if(i != j){
+				sumDist += std::abs(distances[i] - distances[j]);
+			}
+		}
+
+		dist_indexes.push_back(i);
+		dists_sum.push_back(sumDist);
+	}
+
+	//End
+	for(int i = range.end - half + 1; i <= range.end ; i++){
+		double sumDist = 0;
+		for(int j = range.end - k + 1; j <= range.end; j++){
 			if(i != j){
 				sumDist += std::abs(distances[i] - distances[j]);
 			}
