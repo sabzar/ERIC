@@ -298,22 +298,28 @@ void ASM_F::sectorScanning(int argc, char* argv[])
 		}
 
 		for(auto i = 0; i < sf_dists_clouds.size(); i++){
-			v.addCloud(sf_dists_clouds[i], rda::CIRCLES, 0.0f, 1.0f, 0.0f, 1.0f);
+			v.addCloud(sf_dists_clouds[i], rda::CIRCLES, 0.0f, 1.0f, 0.0f, 1.0f);			
 		}
 
 		for(auto i = 0; i < raw_clouds.size(); i++){
 			v_1.addCloud(raw_clouds[i], rda::CIRCLES, 0.0f, 0.0f, 0.0f, 1.0f);
-			v_4.addCloud(raw_clouds[i], rda::CIRCLES, 0.0f, 0.0f, 0.0f, 0.3f);
+			//v_2.addCloud(raw_clouds[i], rda::CIRCLES, 0.0f, 0.0f, 0.0f, 1.0f);
+			v_4.addCloud(raw_clouds[i], rda::CIRCLES, 0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
-		v_2.addClouds(reduce_median_clouds, rda::CIRCLES, 1.0f);
-		v_2.addClouds(raw_clouds, rda::CIRCLES, 0.2f);
+		
+		//v_2.addClouds(raw_clouds, rda::CIRCLES, 0.2f);
 
 		v_3.addClouds(min_cloud_parts_lines, rda::LINES, 1.0f);
 		v_3.addClouds(reduce_median_clouds, rda::CIRCLES, 0.3f, 4.0f);
 		
 		for(auto i = 0; i < sf_clouds.size(); i++){
-			v_4.addCloud(sf_clouds[i], rda::CIRCLES, 1.0f, 1.0f, 0.0f, 1.0f);			
+			v_4.addCloud(sf_clouds[i], rda::CIRCLES, 0.0f, 0.0f, 1.0f, 1.0f);
+			v_2.addCloud(sf_clouds[i], rda::CIRCLES, 0.0f, 0.0f, 1.0f, 1.0f);			
+		}
+
+		for(auto i = 0; i < reduce_median_clouds.size(); i++){
+			v_2.addCloud(reduce_median_clouds[i], rda::CIRCLES, 1.0f, 0.0f, 0.0f, 1.0f);
 		}
 
 		rda::Vizualizer::start();
