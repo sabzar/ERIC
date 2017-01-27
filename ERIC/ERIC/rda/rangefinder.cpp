@@ -132,6 +132,26 @@ void rda::naive_beakpoint_detector(std::vector<double>& distances, std::vector<i
 		indexes.push_back(tmp);	
 }
 
+void rda::naiveBreakpointDetector(rda::cloudPtr cloud, std::vector<int>& v_indexes, double max_diff, int min_points, std::vector<std::vector<int>>& indexes)
+{
+	std::vector<int> tmp;
+	
+	for(auto i = 0; i < v_indexes.size() - 1; i++){
+
+		tmp.push_back(v_indexes[i]);
+
+		if( std::abs( rda::distancePointToPoint(cloud->at(v_indexes[i]), cloud->at(v_indexes[i+1])) ) > max_diff ){
+			if( tmp.size() >= min_points)
+				indexes.push_back(tmp);	
+			tmp.clear();
+		}		
+	}
+
+	tmp.push_back(v_indexes.back());
+	if(tmp.size() >= min_points)
+		indexes.push_back(tmp);	
+}
+
 double maxDistError(double distance, std::vector<std::pair<double, double>> errors)
 {
 	if(distance < errors.front().first)
